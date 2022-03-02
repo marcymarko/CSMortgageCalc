@@ -1,6 +1,7 @@
 ﻿using CSMortgageCalc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using CSMortgageCalc.Helpers;
 
 namespace CSMortgageCalc.Controllers
 {
@@ -35,6 +36,19 @@ namespace CSMortgageCalc.Controllers
             loan.Term = 60;
 
             return View(loan);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult App(Loan loan)
+        {
+            //Calculate the loan and get the payments
+            var loanHelper = new LoanHelper();
+
+            Loan newloan = loanHelper.GetPayments(loan);
+
+
+            return View(newloan);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
